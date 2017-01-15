@@ -1,13 +1,13 @@
 #!/usr/bin/php
 <?php
-
+//Базовый класс для SQLite3
 class MyDB extends SQLite3 {
     function __construct()
     {
         $this->open('weather.sqlite');
     }
 }
-
+//Создание базы данных
 function createTables() {
     $db = new MyDB();
     $sql = "
@@ -20,7 +20,7 @@ function createTables() {
     @$db->exec($sql);
     $db->close();
 }
-
+//Функция для вставки записи в таблицу
 function insertRow($table, $row) {
     $db = new MyDB();
     $wherePar = [];
@@ -41,7 +41,7 @@ function insertRow($table, $row) {
     $db->close();
     return $lastId;
 }
-
+//Вставка данных
 function insertWeatherData() {
     $db = new MyDB();
     $count = 1;

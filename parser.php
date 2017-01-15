@@ -48,6 +48,7 @@ $f = fopen("weather.csv", "w");
 //Вставляем их
 fputcsv($f, $headers);
 //Цикл по индексам
+echo "Парсинг...";
 foreach ($meteoIndexes as $meteoIndex) {
     //Урл, с которого парсим. В него интерполируются значения наших данных (индекс метеотанций и дата)
     $url = "http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST&YEAR=$year&MONTH=$month&FROM=$fromDay&TO=$toDay&STNM=$meteoIndex";
@@ -104,3 +105,4 @@ foreach ($meteoIndexes as $meteoIndex) {
     }
 }
 fclose($f);
+echo "OK";
