@@ -1,0 +1,78 @@
+{
+
+    "dimensions": [
+        {
+            "name": "date_base",
+            "label": "Date Base",
+            "levels": [
+                {
+                    "name":"year",
+                    "label":"Year"
+                },
+                {
+                    "name":"month",
+                    "label":"Month"
+                },
+                {
+                    "name":"day",
+                    "label":"Day"
+                },
+                {
+                    "name":"hours",
+                    "label":"Hours"
+                }
+            ]
+        },
+        {
+            "name": "date_weather",
+            "label": "Weather Date",
+            "template": "date_base"
+        },
+        {
+            "name": "station",
+            "label": "Station",
+            "levels": [ {
+                "name": "station",
+                "label": "Station",
+                "attributes": [ "id", "number", "latitude", "longitude" ]
+            } ]
+        }
+    ],
+    "cubes": [
+        {
+            "name": "weather",
+            "dimensions": ["date_weather", "station" ],
+            "measures": [
+                {"name": "PRES"},{"name": "HGHT"},{"name": "TEMP"},{"name": "DWPT"},{"name": "RELH"},{"name": "MIXR"},{"name": "DRCT"},{"name": "SKNT"},{"name": "THTA"},{"name": "THTE"},{"name": "THTV"}
+            ],
+
+            "joins": [
+                {
+                    "master": "weather.date_id",
+                    "detail": "dates.id"
+                },
+                {
+                    "master": "weather.station_id",
+                    "detail": "stations.id"
+                }
+            ],
+            "aggregates": [
+                {
+                    "name": "record_count",
+                    "function": "count"
+                }
+            ],
+            "mappings": {
+                "date_weather.year": "dates.date_year",
+                "date_weather.hours": "dates.date_hours",
+                "date_weather.month": "dates.date_month",
+                "date_weather.day": "dates.date_day",
+
+                "station.id": "stations.id",
+                "station.number": "stations.station_number",
+                "station.latitude": "stations.station_latitude",
+                "station.longitude": "stations.station_longitude"
+            }
+        }
+    ]
+}
