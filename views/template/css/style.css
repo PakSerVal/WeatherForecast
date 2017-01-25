@@ -1,0 +1,11 @@
+.tbl {
+    width: 300px;
+    border-collapse: collapse;
+}
+.tbl th, .tbl td {
+    padding: 3px;
+    border: 1px solid black;
+}
+.tbl th {
+    background: #b0e0e6;
+}

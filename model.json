@@ -34,7 +34,7 @@
             "levels": [ {
                 "name": "station",
                 "label": "Station",
-                "attributes": [ "id", "number", "latitude", "longitude" ]
+                "attributes": [ "id", "number","name", "latitude", "longitude", "elevation"]
             } ]
         }
     ],
@@ -58,6 +58,96 @@
             ],
             "aggregates": [
                 {
+                    "name": "Average(TEMP)",
+                    "function": "avg",
+                    "measure": "TEMP"
+                },
+                {
+                    "name": "Maximum(TEMP)",
+                    "function": "max",
+                    "measure": "TEMP"
+                },
+                {
+                    "name": "Minimum(TEMP)",
+                    "function": "min",
+                    "measure": "TEMP"
+                },
+                {
+                    "name": "Average(DWPT)",
+                    "function": "avg",
+                    "measure": "DWPT"
+                },
+                {
+                    "name": "Maximum(DWPT)",
+                    "function": "max",
+                    "measure": "DWPT"
+                },
+                {
+                    "name": "Minimum(DWPT)",
+                    "function": "min",
+                    "measure": "DWPT"
+                },
+                {
+                    "name": "Average(RELH)",
+                    "function": "avg",
+                    "measure": "RELH"
+                },
+                {
+                    "name": "Maximum(RELH)",
+                    "function": "max",
+                    "measure": "RELH"
+                },
+                {
+                    "name": "Minimum(RELH)",
+                    "function": "min",
+                    "measure": "RELH"
+                },
+                {
+                    "name": "Average(MIXR)",
+                    "function": "avg",
+                    "measure": "MIXR"
+                },
+                {
+                    "name": "Maximum(MIXR)",
+                    "function": "max",
+                    "measure": "MIXR"
+                },
+                {
+                    "name": "Minimum(MIXR)",
+                    "function": "min",
+                    "measure": "MIXR"
+                },
+                {
+                    "name": "Average(DRCT)",
+                    "function": "avg",
+                    "measure": "DRCT"
+                },
+                {
+                    "name": "Maximum(DRCT)",
+                    "function": "max",
+                    "measure": "DRCT"
+                },
+                {
+                    "name": "Minimum(DRCT)",
+                    "function": "min",
+                    "measure": "DRCT"
+                },
+                {
+                    "name": "Average(SKNT)",
+                    "function": "avg",
+                    "measure": "SKNT"
+                },
+                {
+                    "name": "Maximum(SKNT)",
+                    "function": "max",
+                    "measure": "SKNT"
+                },
+                {
+                    "name": "Minimum(SKNT)",
+                    "function": "min",
+                    "measure": "SKNT"
+                },
+                {
                     "name": "record_count",
                     "function": "count"
                 }
@@ -69,9 +159,11 @@
                 "date_weather.day": "dates.date_day",
 
                 "station.id": "stations.id",
+                "station.name": "stations.station_name",
                 "station.number": "stations.station_number",
                 "station.latitude": "stations.station_latitude",
-                "station.longitude": "stations.station_longitude"
+                "station.longitude": "stations.station_longitude",
+                "station.elevation": "stations.station_elevation"
             }
         }
     ]

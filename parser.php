@@ -40,13 +40,17 @@ $headers = [
     "month",
     "day",
     "time",
+    "station_name",
     "station_number",
     "station_latitude",
     "station_longitude",
+    "station_elevation"
 ];
-$f = fopen("weather.csv", "w");
+$f = fopen("weather.csv", "a");
 //Вставляем их
-fputcsv($f, $headers);
+if(filesize("weather.csv") == 0) {
+    fputcsv($f, $headers);
+}
 //Цикл по индексам
 echo "Парсинг...";
 foreach ($meteoIndexes as $meteoIndex) {
@@ -88,14 +92,21 @@ foreach ($meteoIndexes as $meteoIndex) {
             $inHeader = explode(" ", $inHeader);
             $day  = $inHeader[count($inHeader)-3];
             $time = $inHeader[count($inHeader)-4];
+            $stationName = null;
+            for ($iHeader = 1; $iHeader <= count($inHeader)-7; $iHeader++) {
+                $stationName .= $inHeader[$iHeader] . " ";
+            }
+            $stationName = trim($stationName);
             for($l = 0; $l < $lineIndex-1; $l++) {
                 $values[$l][] = $year;
                 $values[$l][] = $month;
                 $values[$l][] = $day;
                 $values[$l][] = $time;
-                $values[$l][] = $stationInfo["Station number"];
-                $values[$l][] = $stationInfo["Station latitude"];
-                $values[$l][] = $stationInfo["Station longitude"];
+                $values[$l][] = $stationName;
+                $values[$l][] = isset($stationInfo["Station number"])? $stationInfo["Station number"] : null;
+                $values[$l][] = isset($stationInfo["Station latitude"])? $stationInfo["Station latitude"] : null;
+                $values[$l][] = isset($stationInfo["Station longitude"])? $stationInfo["Station longitude"] : null;
+                $values[$l][] = isset($stationInfo["Station elevation"])? $stationInfo["Station elevation"] : null;
                 fputcsv($f, $values[$l]);// пут строки в csv
             }
             $values = [];
