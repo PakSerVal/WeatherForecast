@@ -141,3 +141,28 @@ function draw() {
         })
     })
 }
+
+function getAggregate() {
+    $(document).ready(function () {
+        var lat_1 = $("#lat_1").val();
+        var lat_2 = $("#lat_2").val();
+        var lon_1 = $("#lon_1").val();
+        var lon_2 = $("#lon_2").val();
+        $.ajax({
+            url : "/site/ajaxCoordAver",
+            method : "post",
+            data :{
+                lat_1      : lat_1,
+                lat_2      : lat_2,
+                lon_1      : lon_1,
+                lon_2      : lon_2,
+                year       : $("#year").val(),
+                month      : $("#month").val(),
+                day        : $("#day").val(),
+                hours      : $("#hours").val()
+            }
+        }).done(function (data) {
+            $("#ag-result").html(data);
+        })
+    })
+}

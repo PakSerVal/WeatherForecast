@@ -34,7 +34,7 @@
             "levels": [ {
                 "name": "station",
                 "label": "Station",
-                "attributes": [ "id", "number","name", "latitude", "longitude", "elevation"]
+                "attributes": [ "id", "identifier", "number","name", "latitude", "longitude", "elevation"]
             } ]
         }
     ],
@@ -161,6 +161,7 @@
                 "station.id": "stations.id",
                 "station.name": "stations.station_name",
                 "station.number": "stations.station_number",
+                "station.identifier": "stations.station_identifier",
                 "station.latitude": "stations.station_latitude",
                 "station.longitude": "stations.station_longitude",
                 "station.elevation": "stations.station_elevation"

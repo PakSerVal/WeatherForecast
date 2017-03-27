@@ -1,7 +1,5 @@
 #!/usr/bin/php
 <?php
-ini_set('display_errors',1);
-error_reporting(E_ALL);
 //Получаем индексы метеостанций, дату снятия показаний
 $file = fopen("parseInfo.txt", "r");
 $meteoIndexes = [];
@@ -40,13 +38,14 @@ $headers = [
     "month",
     "day",
     "time",
+    "station_identifier",
     "station_name",
     "station_number",
     "station_latitude",
     "station_longitude",
     "station_elevation"
 ];
-$f = fopen("weather.csv", "a");
+$f = fopen("weather.csv", "w");
 //Вставляем их
 if(filesize("weather.csv") == 0) {
     fputcsv($f, $headers);
@@ -102,6 +101,7 @@ foreach ($meteoIndexes as $meteoIndex) {
                 $values[$l][] = $month;
                 $values[$l][] = $day;
                 $values[$l][] = $time;
+                $values[$l][] = $stationInfo["Station identifier"]? $stationInfo["Station identifier"] : null;
                 $values[$l][] = $stationName;
                 $values[$l][] = isset($stationInfo["Station number"])? $stationInfo["Station number"] : null;
                 $values[$l][] = isset($stationInfo["Station latitude"])? $stationInfo["Station latitude"] : null;

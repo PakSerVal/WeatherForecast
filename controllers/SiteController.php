@@ -66,6 +66,7 @@ class SiteController
         return true;
     }
 
+    //Метеоданные станции
     public function actionAjaxgetData() {
         $year    = $_POST["year"];
         $month   = $_POST["month"];
@@ -109,6 +110,7 @@ class SiteController
         $stationHeaders = [
             "station.name",
             "station.number",
+            "station.identifier",
             "station.latitude",
             "station.longitude",
             "station.elevation"
@@ -118,6 +120,105 @@ class SiteController
             if(!empty($value)) {
                 echo "<label>$header : $value</label><br>";
             }
+        }
+        return true;
+    }
+
+    //Среднее по координатам
+    public function actionAjaxCoordAver() {
+        $lat_1 = $_POST["lat_1"];
+        $lat_2 = $_POST["lat_2"];
+        $lon_1 = $_POST["lon_1"];
+        $lon_2 = $_POST["lon_2"];
+        $year  = $_POST["year"];
+        $month = $_POST["month"];
+        $day   = $_POST["day"];
+        $hours = $_POST["hours"];
+        $stations = weather::getDimensions("station")->data;
+        $stationsList = [];
+        $propStNumber = "station.number";
+        $propStId     = "station.id";
+        $propStLat    = "station.latitude";
+        $propStLon    = "station.longitude";
+        foreach ($stations as $station) {
+            $stationId     = $station->$propStId;
+            $stationNumber = $station->$propStNumber;
+            $stationLat    = $station->$propStLat;
+            $stationLon    = $station->$propStLon;
+            if($lat_1 <= $stationLat && $lat_2 >= $stationLat && $lon_1 <= $stationLon && $lon_2 >= $stationLon) {
+                $stationsList[$stationId] = $stationNumber;
+            }
+        }
+        $headers = [
+            "PRES",
+            "HGHT",
+            "TEMP",
+            "DWPT",
+            "RELH",
+            "MIXR",
+            "DRCT",
+            "SKNT",
+            "THTA",
+            "THTE",
+            "THTV",
+        ];
+        $heightProp = "HGHT";
+        $sumList = [];
+        $stationNumbers = [];
+        foreach ($stationsList as $id => $number) {
+            $stationNumbers[] = $number;
+            $weatherdata = weather::getFacts([
+                "date"    => "$year,$month,$day,$hours",
+                "station" => $id
+            ]);
+            foreach ($weatherdata as $data) {
+                $height = $data->$heightProp;
+                if (empty($sumList[$height])) {
+                    $sumList[$height]["count"] = 1;
+                } else {
+                    $sumList[$height]["count"] ++;
+                }
+                foreach ($headers as $header) {
+                    if (empty($sumList[$height][$header])) {
+                        $sumList[$height][$header] = $data->$header;
+                    } else {
+                        $sumList[$height][$header] += $data->$header;
+                    }
+                }
+            }
+        }
+
+        foreach ($sumList as $height => $sumData) {
+            foreach ($headers as $header) {
+
+                $averList[$height][$header] = $sumData[$header] / $sumData["count"];
+            }
+        }
+
+        ksort($averList);
+
+        if (!empty($averList)) {
+            echo "Номера подходящих станций: " . implode(", ", $stationNumbers);
+            echo "<table class='tbl'>\n";
+            echo "
+              <tr><th>Height</th>";
+            foreach ($headers as $header) {
+                echo "<th>AVG($header)</th>";
+            }
+            echo "</tr>";
+            foreach ($averList as $height => $averValue) {
+                echo "<tr>";
+                echo "<td>" . $height;
+                echo "</td>\n";
+                foreach ($headers as $header) {
+                    echo "<td>" . $averValue[$header];
+                    echo "</td>\n";
+                }
+                echo "</tr>";
+            }
+            echo "</table><br>";
+        } else {
+            echo "Нет станций, подходящих под эти параметры.";
         }
         return true;
     }
