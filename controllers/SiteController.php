@@ -222,4 +222,99 @@ class SiteController
         }
         return true;
     }
+
+    public function actionAjaxDraw() {
+        /* Include all the classes pChart*/
+        include(ROOT . "/classes/pDraw.class.php");
+        include(ROOT . "/classes/pImage.class.php");
+        include(ROOT . "/classes/pData.class.php");
+        $year    = $_POST["year"];
+        $month   = $_POST["month"];
+        $day     = $_POST["day"];
+        $hours   = $_POST["hours"];
+        $station = $_POST["station"];
+        $drawPar = $_POST["drawPar"];
+        $weatherdata = weather::getFacts([
+            "date"    => "$year,$month,$day,$hours",
+            "station" => $station
+        ]);
+        $plotData = [];
+        foreach ($weatherdata as $data) {
+            $heightProp = "HGHT";
+            $height     = $data->$heightProp;
+            $neededPar  = $data->$drawPar;
+            $plotData[$height] = $neededPar;
+        }
+        $myData = new pData();
+        $myData->addPoints(array_values($plotData),"Regression");
+        $myData->addPoints(array_keys($plotData),"Labels");
+//        $myData->addPoints($ypr,"Static");
+        $myData->setSerieDescription("Labels","Days");
+        $myData->setAbscissa("Labels");
+        $myData->setAxisName(1, "Date");
+//    $myData->setAxisUnit(0," KB");
+        $serieSettings = array("R"=>229,"G"=>11,"B"=>11,"Alpha"=>100);
+        $myData->setPalette("Regression",$serieSettings);
+        $myPicture = new pImage(5000,500,$myData); // <-- Размер холста
+        $myPicture->setFontProperties(array("FontName"=>"fonts/GeosansLight.ttf","FontSize"=>8));
+        $myPicture->setGraphArea(50,20,4000,480); // <-- Размещение графика на холсте
+        $myPicture->drawScale();
+        //$myPicture->drawBestFit(array("Alpha"=>40)); // <-- Прямая статистики
+        $myPicture->drawLineChart();
+        $myPicture->drawPlotChart(array("DisplayValues"=>FALSE,"PlotBorder"=>TRUE,"BorderSize"=>0,"Surrounding"=>-60,"BorderAlpha"=>50)); // <-- Точки на графике
+        $myPicture->drawLegend(700,10,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));// <-- Размещение легенды
+        $rand = rand(1, 10000);
+        $myPicture->Render("pChartPic/$rand.img.png");
+        echo "<IMG src=\"/pChartPic/$rand.img.png\" /> <br>\n";
+        return true;
+    }
+
+    public function actionAjaxInterpolate() {
+        $year    = $_POST["year"];
+        $month   = $_POST["month"];
+        $day     = $_POST["day"];
+        $hours   = $_POST["hours"];
+        $station = $_POST["station"];
+        $height  = $_POST["height"];
+        $parStr = $_POST["parStr"];
+        $options = explode(" ", trim($parStr));
+        $weatherdata = weather::getFacts([
+            "date"    => "$year,$month,$day,$hours",
+            "station" => $station
+        ]);
+        $interpolateData = [];
+        foreach ($options as $option) {
+            $newtonData = [];
+            foreach ($weatherdata as $data) {
+                if (!empty($data->HGHT) && !empty($data->$option)) {
+                    $newtonData[$data->HGHT] = $data->$option;
+                }
+            }
+            $interpolateData[$option] = $this->interpolate($height, $newtonData, 4);
+        }
+        echo "<table class='tbl'>\n";
+        echo "
+              <tr><th>Height</th>";
+        foreach ($options as $option) {
+            echo "<th>$option</th>";
+        }
+        echo "</tr>";
+        echo "<tr>";
+            echo "<td>" . $height;
+            echo "</td>\n";
+            foreach ($options as $option) {
+                echo "<td>" . $interpolateData[$option];
+                echo "</td>\n";
+            }
+        echo "</tr>";
+        echo "</table><br>";
+        return true;
+    }
+    private function interpolate($height, array $newtonData, $size) {
+        $newton = new Alg_Math_Analysis_Interpolation_Newton();
+        $newton->setData($newtonData);
+        $newton->buildPolynomial();
+        $newtonPol = $newton->interpolate($height);
+        return $newtonPol;
+    }
 }

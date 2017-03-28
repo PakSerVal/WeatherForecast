@@ -166,3 +166,48 @@ function getAggregate() {
         })
     })
 }
+
+function drawProfile() {
+    $("#vertical-result").empty();
+    $(document).ready(function () {
+        $.ajax({
+            url : "/site/ajaxDraw",
+            method : "post",
+            data :{
+                year       : $("#year").val(),
+                month      : $("#month").val(),
+                day        : $("#day").val(),
+                hours      : $("#hours").val(),
+                drawPar    : $("#drawPar").val(),
+                station    : $("#station").val(),
+            }
+        }).done(function (data) {
+            $("#vertical-result").html(data);
+        })
+    })
+}
+
+function getInterpolateData() {
+    var arr=$('input:checkbox:checked').map(function() {return this.value;}).get();
+    var parStr = "";
+    for (i = 0; i < arr.length; i++) {
+        parStr += (arr[i] + " ");
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url : "/site/ajaxInterpolate",
+            method : "post",
+            data :{
+                year       : $("#year").val(),
+                month      : $("#month").val(),
+                day        : $("#day").val(),
+                hours      : $("#hours").val(),
+                height     : $("#inter_height").val(),
+                parStr     : parStr,
+                station    : $("#station").val(),
+            }
+        }).done(function (data) {
+            $("#interpolate-result").html(data);
+        })
+    })
+}

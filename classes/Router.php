@@ -25,9 +25,6 @@ class Router
     {
         // Получить строку запроса
         $uri = $this->getURI();
-        $f = fopen("ttt.txt", "a");
-        fwrite($f, $uri);
-        fclose($f);
         // Проверить наличие такого запроса в routes.php
         foreach ($this->routes as $uriPattern => $path) {
 
