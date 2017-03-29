@@ -9,3 +9,26 @@
 .tbl th {
     background: #b0e0e6;
 }
+.ag-result {
+    margin-left: 100px;
+}
+.back {
+
+}
+#first-block {
+    padding-top: 50px;
+}
+#second-block {
+    padding-top: 50px;
+    background-color: cadetblue;
+}
+#third-block {
+    padding-top: 50px;
+}
+#fourth-block{
+    padding-top: 50px;
+    background-color: cadetblue;
+}
+footer {
+    margin-top: 100px;
+}
