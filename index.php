@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors',1);
-error_reporting(E_ALL);
-
 
 define('ROOT', dirname(__FILE__));
 define('CUBE', 'courses');
@@ -12,9 +9,3 @@ session_start();
 
 $router = new Router();
 $router->run();
-//$ar = [];
-//$f = fopen("weather.csv", "r");
-//while ($line = fgetcsv($f)) {
-//    $ar[] = $line[0];
-//}
-//echo implode(",", $ar);
