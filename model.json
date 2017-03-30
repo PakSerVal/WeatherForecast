@@ -34,14 +34,23 @@
             "levels": [ {
                 "name": "station",
                 "label": "Station",
-                "attributes": [ "id", "number","name", "latitude", "longitude", "elevation"]
+                "attributes": [ "id", "number","name", "identifier", "latitude", "longitude", "elevation"]
+            } ]
+        },
+        {
+            "name": "height",
+            "label": "Height",
+            "levels": [ {
+                "name": "height",
+                "label": "Height",
+                "attributes": ["HGHT"]
             } ]
         }
     ],
     "cubes": [
         {
             "name": "weather",
-            "dimensions": ["date_weather", "station" ],
+            "dimensions": ["date_weather", "station" , "height"],
             "measures": [
                 {"name": "PRES"},{"name": "HGHT"},{"name": "TEMP"},{"name": "DWPT"},{"name": "RELH"},{"name": "MIXR"},{"name": "DRCT"},{"name": "SKNT"},{"name": "THTA"},{"name": "THTE"},{"name": "THTV"}
             ],
@@ -161,9 +170,12 @@
                 "station.id": "stations.id",
                 "station.name": "stations.station_name",
                 "station.number": "stations.station_number",
+                "station.identifier": "stations.station_identifier",
                 "station.latitude": "stations.station_latitude",
                 "station.longitude": "stations.station_longitude",
-                "station.elevation": "stations.station_elevation"
+                "station.elevation": "stations.station_elevation",
+
+                "height": "weather.HGHT"
             }
         }
     ]

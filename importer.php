@@ -13,7 +13,7 @@ function createTables() {
     $sql = "
             drop table if exists dates; drop table if exists stations; drop table if exists weather;
             CREATE TABLE dates (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `date_year` integer, `date_month` integer, `date_day` integer, `date_hours` integer);
-            CREATE TABLE stations (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `station_name` VARCHAR (128), `station_number` integer, `station_latitude` REAL , `station_longitude` REAL, `station_elevation` REAL);
+            CREATE TABLE stations (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `station_name` VARCHAR (128), `station_identifier` VARCHAR (128), `station_number` integer, `station_latitude` REAL , `station_longitude` REAL, `station_elevation` REAL);
             CREATE TABLE weather (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `date_id` INTEGER(128), `station_id` INTEGER, `PRES` REAL, `HGHT` REAL, `TEMP` REAL, `DWPT` REAL, `RELH` REAL, `MIXR` REAL, `DRCT` REAL, `SKNT` REAL, `THTA` REAL, `THTE` REAL, `THTV` REAL);
     ";
 
@@ -77,6 +77,7 @@ function insertWeatherData() {
             $dateId = insertRow("dates", $dateRow);
             $stationRow = [
                 "station_name" => $row["station_name"],
+                "station_identifier" => $row["station_identifier"],
                 "station_number" => $row["station_number"],
                 "station_latitude" => $row["station_latitude"],
                 "station_longitude" => $row["station_longitude"],
