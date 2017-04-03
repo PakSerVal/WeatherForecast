@@ -1,6 +1,3 @@
-body {
-	background: url("../img/background.jpg") no-repeat fixed center center / 100% auto rgba(0, 0, 0, 0);
-}
 nav {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 	position: absolute;
@@ -67,13 +64,13 @@ nav ul li ul li {
 	background: #fff;
 }
 #second-block {
-	background: none repeat scroll 0 0 rgba(0, 30, 34, 0.85);
+	background: #fff;
 }
 #third-block {
 	background: #fff;
 }
 #fourth-block {
-	background: rgb(0, 30, 34);
+	background: #fff;
 }
 footer {
 	background: none repeat scroll 0 0 #2fcbe0;
@@ -132,7 +129,7 @@ section p {
 	font-size: 0.8em;
 }
 section h1 {
-	color: #fff;
+	color: #000;
 	font-size: 2.5em;
 	font-weight: 300;
 	text-transform: uppercase;
@@ -216,39 +213,54 @@ form.customform input, form.customform select, form.customform textarea {
 	display: block;
 }
 @media screen and (max-width: 768px) {
-  body {
-  	background: none repeat scroll 0 0 rgb(0, 30, 34);
-  }
-  nav {
-  	background: none repeat scroll 0 0 rgb(0, 30, 34);
-  	line-height: 1em;
-  	position: relative;
-  }
-  .top-nav {
-  	text-align: left;
-  }
-  .top-nav li {
-  	line-height: 3em;
-  }
-  .top-nav .logo {
-  	padding: 1.25em;
-  }
-  .carousel-text h2 {
-  	font-size: 1.3em;
-  }
-  .carousel-text p {
-  	font-size: 1em;
-  }
-  ul.top-ul {
-  	padding: 0;
-  }
-  ul.top-ul.right {
-  	float: none;
-  }
-  footer {
-  text-align: center;
-  }
-  footer .right {
-  float: none;
-  }
+	body {
+		background: none repeat scroll 0 0 rgb(0, 30, 34);
+	}
+	nav {
+		background: none repeat scroll 0 0 rgb(0, 30, 34);
+		line-height: 1em;
+		position: relative;
+	}
+	.top-nav {
+		text-align: left;
+	}
+	.top-nav li {
+		line-height: 3em;
+	}
+	.top-nav .logo {
+		padding: 1.25em;
+	}
+	.carousel-text h2 {
+		font-size: 1.3em;
+	}
+	.carousel-text p {
+		font-size: 1em;
+	}
+	ul.top-ul {
+		padding: 0;
+	}
+	ul.top-ul.right {
+		float: none;
+	}
+	footer {
+		text-align: center;
+	}
+	footer .right {
+		float: none;
+	}
+}
+
+#info-result {
+	margin-left: 220px;
+}
+
+#ag-result {
+	margin-left: 220px;
+}
+
+#vertical-result {
+}
+
+#interpolate-result {
+	margin-left: 220px;
 }
