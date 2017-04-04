@@ -331,6 +331,7 @@ class SiteController
         echo "</table><br>";
         return true;
     }
+
     private function interpolate($height, array $newtonData, $size) {
         $newton = new Alg_Math_Analysis_Interpolation_Newton();
         $newton->setData($newtonData);
