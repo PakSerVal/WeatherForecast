@@ -8,5 +8,8 @@ return array(
     'site/ajaxDraw'        => 'site/AjaxDraw',
     'site/ajaxInterpolate' => 'site/AjaxInterpolate',
     'site/ajaxCoordAver'   => 'site/AjaxCoordAver',
-    ''                     => 'site/index',
+    'site/average'         => 'site/Average',
+    'site/interpolate'     => 'site/Interpolate',
+    'site/vertical'        => 'site/Vertical',
+    ''                     => 'site/Common',
 );

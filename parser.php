@@ -7,6 +7,7 @@ $year    = null;
 $month   = null;
 $fromDay = null;
 $toDay   = null;
+//Инициализаиця
 while (($line = fgets($file, 1000)) != false) {
     $fields = explode(":", $line);
     if($fields[0] == "Станции") {
@@ -45,7 +46,7 @@ $headers = [
     "station_longitude",
     "station_elevation"
 ];
-$f = fopen("weather.csv", "w");
+$f = fopen("weather.csv", "a");
 //Вставляем их
 if(filesize("weather.csv") == 0) {
     fputcsv($f, $headers);

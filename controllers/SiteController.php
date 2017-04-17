@@ -2,7 +2,7 @@
 
 class SiteController
 {
-    public function actionIndex() {
+    public function actionCommon() {
         $stations = weather::getDimensions("station")->data;
         $stationsList = [];
         $propStNumber = "station.number";
@@ -20,7 +20,30 @@ class SiteController
             $yearsList[] = $year->$propName;
         }
 
-        include_once ROOT."/views/site/index.php";
+        $_SESSION["years"] = $yearsList;
+        $_SESSION["stations"] = $stationsList;
+
+        include_once ROOT . "/views/site/common.php";
+        return true;
+    }
+
+    public function actionAverage() {
+        $yearsList = $_SESSION["years"];
+        include_once ROOT . "/views/site/average.php";
+        return true;
+    }
+
+    public function actionInterpolate() {
+        $yearsList = $_SESSION["years"];
+        $stationsList = $_SESSION["stations"];
+        include_once ROOT . "/views/site/interpolate.php";
+        return true;
+    }
+
+    public function actionVertical() {
+        $yearsList = $_SESSION["years"];
+        $stationsList = $_SESSION["stations"];
+        include_once ROOT . "/views/site/vertical.php";
         return true;
     }
 
@@ -248,13 +271,12 @@ class SiteController
         $myData = new pData();
         $myData->addPoints(array_values($plotData),"Regression");
         $myData->addPoints(array_keys($plotData),"Labels");
-//        $myData->addPoints($ypr,"Static");
-        $myData->setSerieDescription("Labels","Days");
-        $myData->setAbscissa("Labels");
-        $myData->setAxisName(1, "Date");
-//    $myData->setAxisUnit(0," KB");
+//        $myData->addPoints($ypr,"Static");//    $myData->setAxisUnit(0," KB");
         $serieSettings = array("R"=>229,"G"=>11,"B"=>11,"Alpha"=>100);
         $myData->setPalette("Regression",$serieSettings);
+        $myData->setAxisName(0,"$drawPar");
+        $myData->setSerieDescription("Labels","HGHT");
+        $myData->setAbscissa("Labels");
         $myPicture = new pImage(5000,500,$myData); // <-- Размер холста
         $myPicture->setFontProperties(array("FontName"=>"fonts/GeosansLight.ttf","FontSize"=>8));
         $myPicture->setGraphArea(50,20,4000,480); // <-- Размещение графика на холсте
@@ -262,7 +284,6 @@ class SiteController
         //$myPicture->drawBestFit(array("Alpha"=>40)); // <-- Прямая статистики
         $myPicture->drawLineChart();
         $myPicture->drawPlotChart(array("DisplayValues"=>FALSE,"PlotBorder"=>TRUE,"BorderSize"=>0,"Surrounding"=>-60,"BorderAlpha"=>50)); // <-- Точки на графике
-        $myPicture->drawLegend(700,10,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));// <-- Размещение легенды
         $rand = rand(1, 10000);
         $myPicture->Render("pChartPic/$rand.img.png");
         echo "<IMG src=\"/pChartPic/$rand.img.png\" /> <br>\n";
@@ -310,6 +331,7 @@ class SiteController
         echo "</table><br>";
         return true;
     }
+
     private function interpolate($height, array $newtonData, $size) {
         $newton = new Alg_Math_Analysis_Interpolation_Newton();
         $newton->setData($newtonData);
